@@ -8,4 +8,5 @@ CREATE TABLE user (
 
 CREATE SEQUENCE user_version_seq;
 
-CREATE TRIGGER update_trigger BEFORE INSERT ON user FOR EACH ROW CALL "com.crixal.interview.db.trigger.UpdateVersionTrigger";
+CREATE TRIGGER insert_user_version_trigger BEFORE INSERT ON user FOR EACH ROW CALL "com.crixal.interview.db.trigger.UpdateVersionTrigger";
+CREATE TRIGGER update_user_version_trigger BEFORE UPDATE ON user FOR EACH ROW CALL "com.crixal.interview.db.trigger.UpdateVersionTrigger";

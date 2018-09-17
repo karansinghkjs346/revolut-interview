@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+
+group 'com.crixal'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext {
+    flywayVersion = "5.1.4"
+    guiceVersion = "4.2.0"
+    h2Version = "1.4.197"
+    hikariCPVersion = "3.2.0"
+    jdbiVersion = "2.78"
+    junitVesion = "4.12"
+    logbackClassicVersion = "1.2.3"
+    rapidoidVersion = "5.5.5"
+    restAssuredVersion = "3.1.1"
+    typesafeConfigVersion = "1.3.3"
+}
+
+dependencies {
+    compile "com.google.inject:guice:$guiceVersion"
+    compile "com.google.inject.extensions:guice-multibindings:$guiceVersion"
+    compile "org.rapidoid:rapidoid-http-server:$rapidoidVersion"
+    compile "ch.qos.logback:logback-classic:$logbackClassicVersion"
+    compile "com.h2database:h2:$h2Version"
+    compile "org.jdbi:jdbi:$jdbiVersion"
+    compile "com.zaxxer:HikariCP:$hikariCPVersion"
+    compile "org.flywaydb:flyway-core:$flywayVersion"
+    compile "com.typesafe:config:$typesafeConfigVersion"
+
+    testCompile "junit:junit:$junitVesion"
+    testCompile "io.rest-assured:rest-assured:$restAssuredVersion"
+}
+
+shadowJar() {
+    archiveName = "revolut-interview-all-${version}.jar"
+    mergeServiceFiles()
+    exclude 'META-INF/.SF'
+    exclude 'META-INF/.DSA'
+    exclude 'META-INF/.RSA'
+    manifest {
+        attributes 'Implementation-Title': 'Interview',
+                'Implementation-Version': version,
+                'Main-Class': 'com.crixal.interview.Starter'
+    }
+}
+
+build.dependsOn shadowJar
